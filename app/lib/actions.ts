@@ -55,10 +55,21 @@ export async function updateInvoice(id: string, formData: FormData) {
 }
 
 export async function deleteInvoice(id: string) {
-  await sql`
+  throw new Error('Oops');
+  try {
+    await sql`
     DELETE FROM invoices
     WHERE id = ${id}
   `;
 
-  revalidatePath('/dashboard/invoices');
+    revalidatePath('/dashboard/invoices');
+
+    return {
+      message: 'Invoice deleted successfully',
+    };
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to Delete Invoice',
+    };
+  }
 }
